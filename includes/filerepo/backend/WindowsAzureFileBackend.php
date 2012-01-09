@@ -23,50 +23,13 @@
  * @ingroup FileBackend
  */
 class WindowsAzureFileBackend extends FileBackend {
-
-	function doStore( array $p ) {
-		return $this->doStoreInternal( $p );
-	}
-
-	function doCopy( array $p ) {
-		return $this->doCopyInternal( $p );
-	}
-
-	function doDelete( array $p ) {
-		return $this->doDeleteInternal( $p );
-	}
-
-	function doConcatenate( array $p ) {
-		return $this->dodoConcatenateInternal( $p );
-	}
-
-	function doCreate( array $p ) {
-		return $this->doCreateInternal( $p );
-	}
-
-	/**
-	 * @see FileBackend::move()
-	 */
-	protected function doMove( array $params ) {
-		// Copy source to dest
-		// TODO: Remove backend. I assume, this function does not need to be overridden.
-		$status = $this->backend->copy( $params );
-		if ( !$status->isOK() ) {
-			return $status;
-		}
-		// Delete source (only fails due to races or medium going down)
-		// TODO: Remoce backend
-		$status->merge( $this->backend->delete( array( 'src' => $params['src'] ) ) );
-		$status->setResult( true, $status->value ); // ignore delete() errors
-		return $status;
-	}
-
+	
 	/** @var Microsoft_WindowsAzure_Storage_Blob */
 	protected $storageClient = null;
 
 	/** @var Array Map of container names to Azure container names */
 	protected $containerPaths = array();
-
+	
 	/**
 	 * @see FileBackend::__construct()
 	 * Additional $config params include:
@@ -74,7 +37,7 @@ class WindowsAzureFileBackend extends FileBackend {
 	 *    azureAccount   : Windows Azure user used by MediaWiki
 	 *    azureKey       : Authentication key for the above user (used to get sessions)
 	 *    //azureContainer : Identifier of the container. (Optional. If not provided wikiId will be used as container name)
-	 *    containerPaths : Map of container names to Azure container names
+     *    containerPaths : Map of container names to Azure container names
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
@@ -96,7 +59,13 @@ class WindowsAzureFileBackend extends FileBackend {
 		if ( strlen( urlencode( $relStoragePath ) ) > 1024 ) {
 			return null;
 		}
+		
+		// Get absolute path given the container base dir
+		if ( isset( $this->containerPaths[$container] ) ) {
+			return $this->containerPaths[$container] . "/{$relStoragePath}";
+		}
 		// TODO: Should storagepath not be urlencoded?
+		// TODO: return null
 		return $relStoragePath;
 	}
 
@@ -105,16 +74,14 @@ class WindowsAzureFileBackend extends FileBackend {
 	 */
 	function doStoreInternal( array $params ) {
 		$status = Status::newGood();
-		// TODO: Use more telling names
-		list( $c, $dir ) = $this->resolveStoragePath( $params['dst'] );
+		list( $dstCont, $dstRel ) = $this->resolveStoragePath( $params['dst'] );
 		try {
-			$result = $this->storageClient->putBlob( $c, $dir, $params['src']);
+			$result = $this->storageClient->putBlob( $dstCont, $dstRel, $params['src']);
 		}
 		catch ( Exception $e ) {
 			// TODO: Read exception. Are there different ones?
 			$status->fatal( 'backend-fail-put' );
 		}
-		//error_log( __METHOD__.'::putBlob - result: '.print_r( $result, true ) );
 		return $status;
 	}
 
@@ -125,6 +92,7 @@ class WindowsAzureFileBackend extends FileBackend {
 		$status = Status::newGood();
 		list( $srcContainer, $srcDir ) = $this->resolveStoragePath( $params['src'] );
 		list( $dstContainer, $dstDir ) = $this->resolveStoragePath( $params['dst'] );
+
 		// TODO: check for null
 		try {
 			$result = $this->storageClient->copyBlob( $srcContainer, $srcDir, $dstContainer, $dstDir);
@@ -132,7 +100,6 @@ class WindowsAzureFileBackend extends FileBackend {
 		catch ( Exception $e ) {
 			$status->fatal( 'backend-fail-copy', $e->getMessage() );
 		}
-		//error_log( __METHOD__.'::copyBlob - result: '.print_r( $result, true ) );			
 		return $status;
 	}
 
@@ -149,12 +116,10 @@ class WindowsAzureFileBackend extends FileBackend {
 		}
 
 		// (a) Check the source container
-		try { //TODO: Unnecessary --> remove
+		try { //TODO: Unnecessary --> remove (or better, check in resolveStoragePath?)
 			$container = $this->storageClient->getContainer( $srcCont );
 		}
 		catch ( Exception $e ) {
-			// TODO: remove error_log
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 			return $status;
 		}
@@ -164,7 +129,6 @@ class WindowsAzureFileBackend extends FileBackend {
 			$this->storageClient->deleteBlob( $srcCont, $srcRel );
 		}
 		catch ( Exception $e ) {
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 		}
 
@@ -193,10 +157,9 @@ class WindowsAzureFileBackend extends FileBackend {
 		// (b) Actually create the object
 		try {
 			// TODO: how do I know the container exists? Should we call prepare?
-			$this->storageClient->putBlobData( $dstCont, $dstRel,  $params['content'] );
+			$this->storageClient->putBlobData( $dstCont, $dstRel, $params['content'] );
 		}
 		catch ( Exception $e ) {
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 		}
 
@@ -206,7 +169,8 @@ class WindowsAzureFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::prepare()
 	 */
-	function prepare( array $params ) {
+
+	function doPrepareInternal( $container, $dir, array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
@@ -216,9 +180,10 @@ class WindowsAzureFileBackend extends FileBackend {
 		}
 		try {
 			$this->storageClient->createContainerIfNotExists( $c );
-			$this->storageClient->setContainerAcl( $c, Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC );//TODO: Really set public?
+			// TODO: must this be set anytime prepare is called?
+			$this->storageClient->setContainerAcl( $c, Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC );
 
-			//TODO: check if readable and writeable
+			// TODO: check if readable and writeable
 			//$container = $this->storageClient->getContainer( $c );
 			//$status->fatal( 'directoryreadonlyerror', $params['dir'] );
 			//$status->fatal( 'directorynotreadableerror', $params['dir'] );
@@ -230,6 +195,7 @@ class WindowsAzureFileBackend extends FileBackend {
 		return $status;
 	}
 
+
 	/**
 	 * @see FileBackend::resolveContainerName()
 	 */
@@ -237,7 +203,7 @@ class WindowsAzureFileBackend extends FileBackend {
 		//Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
 		$container = strtolower($container);
 		$container = preg_replace( '#[^a-z0-9\-]#', '', $container );
-		// TODO: -test und test- geht auch nicht
+		// TODO: "-test" and "test-" are invalid, too
 		$container = preg_replace( '#-{2,}#', '-', $container );
 
 		return $container;
@@ -246,27 +212,35 @@ class WindowsAzureFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::secure()
 	 */
+	/*
+	// TODO: check if we need to override doSecure
 	function secure( array $params ) {
 		$status = Status::newGood();
-		// @TODO: restrict container from $this->swiftProxyUser
 		return $status; // badgers? We don't need no steenking badgers!
 	}
+	*/
 
 	/**
 	 * @see FileBackend::fileExists()
 	 */
-	function fileExists( array $params ) {
-		list( $c, $dir ) = $this->resolveStoragePath( $params['src'] );
-		// TODO: null? Telling names
-		$exists = $this->storageClient->blobExists( $c, $dir );
-		//error_log( __METHOD__.'::blobExists - result: '.$exists );
+	function doFileExists( array $params ) {die();
+		// TODO: Merely renamed this functino from fileExists. Check if more is neccessarey
+		// TODO: Off topic here: Prepare function might call some internal function which can be overridden.
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			return false; // invalid storage path
+		}
+
+		$exists = $this->storageClient->blobExists( $srcCont, $srcRel );
 		return $exists;
 	}
 
 	/**
 	 * @see FileBackend::getFileTimestamp()
 	 */
-	function getFileTimestamp( array $params ) {
+	// TODO: merely renamed from getFileTimestamp. Check if there are any probs.
+	// TODO: Is this method still used?
+	function doGetFileTimestamp( array $params ) {
 		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
@@ -276,9 +250,9 @@ class WindowsAzureFileBackend extends FileBackend {
 		try {
 			//TODO Maybe use getBlobData()?
 			$blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
-			$timestamp = wfTimestamp( TS_MW, $blob->lastmodified ); //TODO: Timezone?
-		} catch ( Exception $e ) { // some other exception?
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+			$timestamp = wfTimestamp( TS_MW, $blob->LastModified ); //TODO: Timezone?
+		} catch ( Exception $e ) {
+			// TODO: Log it? What about different types of exceptions?
 		}
 		return $timestamp;
 	}
@@ -286,22 +260,24 @@ class WindowsAzureFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::getFileList()
 	 */
-	function getFileList( array $params ) {
+	function getFileListInternal( $container, $dir, array $params ) {
+		// TODO: merely renamed from getFileList. Check implications (i assume, the list thing is no longer needed.
+		//list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		$files = array();
-		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		try {
 			if ( $dir === null ) {
-				$blobs = $this->storageClient->listBlobs($c);
+				$blobs = $this->storageClient->listBlobs($container);
 			}
 			else {
-				$blobs = $this->storageClient->listBlobs( $c, $dir );//TODO:Check if $dir really is a startsequence of the blob name
+				//TODO: Check if $dir really is a startsequence of the blob name
+				$blobs = $this->storageClient->listBlobs($container, $dir);
 			}
+
 			foreach( $blobs as $blob ) {
 				$files[] = $blob->name;
 			}
 		}
 		catch( Exception $e ) {
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			return null;
 		}
 
@@ -332,10 +308,37 @@ class WindowsAzureFileBackend extends FileBackend {
 			$this->storageClient->getBlob( $srcCont, $srcRel, $tmpPath );
 		}
 		catch ( Exception $e ) {
-			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$tmpFile = null;
 		}
 
 		return $tmpFile;
+	}
+	
+	/**
+	 * @see FileBackend::doFileExists()
+	 */
+	protected function doGetFileStat( array $params ) {
+		// TODO: Refactor
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		if ( $srcRel === null ) {
+			return false; // invalid storage path
+		}
+
+		$timestamp= false;
+		$size = false;
+		// TODO: need additional checks??
+		try {
+			// TODO: Maybe use getBlobData()?
+			$blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
+			$timestamp = wfTimestamp( TS_MW, $blob->LastModified ); //TODO: Timezone?
+			$size = $blob->Size;
+			return array(
+				'mtime' => $timestamp,
+				'size'  => $size
+			);
+		} catch ( Exception $e ) { 
+			// TODO: Log it? What about different types of exceptions?
+		}
+		return false;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /*
- (c) Hallo Welt! Medienwerkstatt GmbH, 2011 GPL
-
+ (c) Hallo Welt! Medienwerkstatt GmbH together with Microsoft Corp., 2011 GPL
+ 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -26,7 +26,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['other'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'WindowsAzureStorage',
-	'author'         => array( 'Hallo Welt! Medienwerkstatt GmbH' ),
+	'author'         => array( 'Hallo Welt! Medienwerkstatt GmbH', 'Markus Glaser', 'Robert Vogel' ),
 	'url'            => 'http://www.hallowelt.biz',
 	'version'        => '1.0.0',
 	'descriptionmsg' => 'windowsazurestorage-desc',
@@ -36,24 +36,3 @@ $dir = dirname(__FILE__) . '/';
 $wgExtensionMessagesFiles['WindowsAzureStorage'] = $dir . 'WindowsAzureStorage.i18n.php';
 
 $wgAutoloadClasses['WindowsAzureFileBackend'] = $dir . 'includes/filerepo/backend/WindowsAzureFileBackend.php';
-
-/* Those are just development values. You may override them or specify your own backend definition in LocalSettings.php */
-$wgFileBackends[] = array(
-	'name'        => 'azure-backend',
-	'class'       => 'WindowsAzureFileBackend',
-	//'wikiId'      => 'some_unique_ID',
-	'lockManager' => 'nullLockManager',
-	'azureHost'      => 'http://127.0.0.1:10000',
-	'azureAccount'   => 'devstoreaccount1',
-	'azureKey'       => 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==',
-	//'azureContainer' => 'developcontainer',
-
-	//IMPORTANT: Mind the container naming conventions! http://msdn.microsoft.com/en-us/library/dd135715.aspx
-	'containerPaths' => array(
-		'media-public'  => 'media-public',
-		'media-thumb'   => 'media-thumb',
-		'media-deleted' => 'media-deleted',
-		'media-temp'    => 'media-temp',
-
-	)
-);
