@@ -27,23 +27,23 @@ class WindowsAzureFileBackend extends FileBackend {
 	function doStore( array $p ) {
 		return $this->doStoreInternal( $p );
 	}
-	
+
 	function doCopy( array $p ) {
 		return $this->doCopyInternal( $p );
 	}
-	
+
 	function doDelete( array $p ) {
 		return $this->doDeleteInternal( $p );
 	}
-	
+
 	function doConcatenate( array $p ) {
 		return $this->dodoConcatenateInternal( $p );
 	}
-	
+
 	function doCreate( array $p ) {
 		return $this->doCreateInternal( $p );
 	}
-	
+
 	/**
 	 * @see FileBackend::move()
 	 */
@@ -60,13 +60,13 @@ class WindowsAzureFileBackend extends FileBackend {
 		$status->setResult( true, $status->value ); // ignore delete() errors
 		return $status;
 	}
-	
+
 	/** @var Microsoft_WindowsAzure_Storage_Blob */
 	protected $storageClient = null;
 
-    /** @var Array Map of container names to Azure container names */
+	/** @var Array Map of container names to Azure container names */
 	protected $containerPaths = array();
-	
+
 	/**
 	 * @see FileBackend::__construct()
 	 * Additional $config params include:
@@ -74,7 +74,7 @@ class WindowsAzureFileBackend extends FileBackend {
 	 *    azureAccount   : Windows Azure user used by MediaWiki
 	 *    azureKey       : Authentication key for the above user (used to get sessions)
 	 *    //azureContainer : Identifier of the container. (Optional. If not provided wikiId will be used as container name)
-     *    containerPaths : Map of container names to Azure container names
+	 *    containerPaths : Map of container names to Azure container names
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
@@ -84,14 +84,14 @@ class WindowsAzureFileBackend extends FileBackend {
 				$config['azureKey']
 		);
 
-        $this->containerPaths = (array)$config['containerPaths'];
+		$this->containerPaths = (array)$config['containerPaths'];
 	}
 
 	/**
 	 * @see FileBackend::resolveContainerPath()
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
-        //Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
+		//Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
 
 		if ( strlen( urlencode( $relStoragePath ) ) > 1024 ) {
 			return null;
@@ -150,11 +150,11 @@ class WindowsAzureFileBackend extends FileBackend {
 
 		// (a) Check the source container
 		try { //TODO: Unnecessary --> remove
-            $container = $this->storageClient->getContainer( $srcCont );
+			$container = $this->storageClient->getContainer( $srcCont );
 		}
-        catch ( Exception $e ) {
+		catch ( Exception $e ) {
 			// TODO: remove error_log
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 			return $status;
 		}
@@ -163,8 +163,8 @@ class WindowsAzureFileBackend extends FileBackend {
 		try {
 			$this->storageClient->deleteBlob( $srcCont, $srcRel );
 		}
-        catch ( Exception $e ) {
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+		catch ( Exception $e ) {
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 		}
 
@@ -184,19 +184,19 @@ class WindowsAzureFileBackend extends FileBackend {
 		}
 
 		// (a) Check if the destination object already exists
-        $blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
-        if ( $blobExists && empty( $params['overwriteDest'] ) ) { //Blob exists _and_ should not be overridden
-            $status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-            return $status;
-        }
+		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
+		if ( $blobExists && empty( $params['overwriteDest'] ) ) { //Blob exists _and_ should not be overridden
+			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+			return $status;
+		}
 
 		// (b) Actually create the object
 		try {
 			// TODO: how do I know the container exists? Should we call prepare?
-            $this->storageClient->putBlobData( $dstCont, $dstRel,  $params['content'] );
+			$this->storageClient->putBlobData( $dstCont, $dstRel,  $params['content'] );
 		}
-        catch ( Exception $e ) {
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+		catch ( Exception $e ) {
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$status->fatal( 'backend-fail-internal' );
 		}
 
@@ -209,36 +209,36 @@ class WindowsAzureFileBackend extends FileBackend {
 	function prepare( array $params ) {
 		$status = Status::newGood();
 
-        list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
 			return $status; // invalid storage path
 		}
-        try {
-            $this->storageClient->createContainerIfNotExists( $c );
-            $this->storageClient->setContainerAcl( $c, Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC );//TODO: Really set public?
+		try {
+			$this->storageClient->createContainerIfNotExists( $c );
+			$this->storageClient->setContainerAcl( $c, Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC );//TODO: Really set public?
 
-            //TODO: check if readable and writeable
-            //$container = $this->storageClient->getContainer( $c );
-            //$status->fatal( 'directoryreadonlyerror', $params['dir'] );
-            //$status->fatal( 'directorynotreadableerror', $params['dir'] );
-        }
-        catch (Exception $e ) {
-            $status->fatal( 'directorycreateerror', $params['dir'] );
+			//TODO: check if readable and writeable
+			//$container = $this->storageClient->getContainer( $c );
+			//$status->fatal( 'directoryreadonlyerror', $params['dir'] );
+			//$status->fatal( 'directorynotreadableerror', $params['dir'] );
+		}
+		catch (Exception $e ) {
+			$status->fatal( 'directorycreateerror', $params['dir'] );
 			return $status;
-        }
+		}
 		return $status;
 	}
-    
-    /**
+
+	/**
 	 * @see FileBackend::resolveContainerName()
 	 */
-    protected function resolveContainerName( $container ) {
-        //Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
-        $container = strtolower($container);
-        $container = preg_replace( '#[^a-z0-9\-]#', '', $container );
+	protected function resolveContainerName( $container ) {
+		//Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
+		$container = strtolower($container);
+		$container = preg_replace( '#[^a-z0-9\-]#', '', $container );
 		// TODO: -test und test- geht auch nicht
-        $container = preg_replace( '#-{2,}#', '-', $container );
+		$container = preg_replace( '#-{2,}#', '-', $container );
 
 		return $container;
 	}
@@ -256,7 +256,7 @@ class WindowsAzureFileBackend extends FileBackend {
 	 * @see FileBackend::fileExists()
 	 */
 	function fileExists( array $params ) {
-        list( $c, $dir ) = $this->resolveStoragePath( $params['src'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['src'] );
 		// TODO: null? Telling names
 		$exists = $this->storageClient->blobExists( $c, $dir );
 		//error_log( __METHOD__.'::blobExists - result: '.$exists );
@@ -272,38 +272,38 @@ class WindowsAzureFileBackend extends FileBackend {
 			return false; // invalid storage path
 		}
 
-        $timestamp= false;
+		$timestamp= false;
 		try {
-            //TODO Maybe use getBlobData()?
-            $blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
-            $timestamp = wfTimestamp( TS_MW, $blob->lastmodified ); //TODO: Timezone?
+			//TODO Maybe use getBlobData()?
+			$blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
+			$timestamp = wfTimestamp( TS_MW, $blob->lastmodified ); //TODO: Timezone?
 		} catch ( Exception $e ) { // some other exception?
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 		}
-        return $timestamp;
+		return $timestamp;
 	}
 
 	/**
 	 * @see FileBackend::getFileList()
 	 */
 	function getFileList( array $params ) {
-        $files = array();
+		$files = array();
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
-        try {
-            if ( $dir === null ) {
-                $blobs = $this->storageClient->listBlobs($c);
-            }
-            else {
-                $blobs = $this->storageClient->listBlobs( $c, $dir );//TODO:Check if $dir really is a startsequence of the blob name
-            }
-            foreach( $blobs as $blob ) {
-                $files[] = $blob->name;
-            }
-        }
-        catch( Exception $e ) {
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
-            return null;
-        }
+		try {
+			if ( $dir === null ) {
+				$blobs = $this->storageClient->listBlobs($c);
+			}
+			else {
+				$blobs = $this->storageClient->listBlobs( $c, $dir );//TODO:Check if $dir really is a startsequence of the blob name
+			}
+			foreach( $blobs as $blob ) {
+				$files[] = $blob->name;
+			}
+		}
+		catch( Exception $e ) {
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+			return null;
+		}
 
 		// if there are no files matching the prefix, return empty array
 		return $files;
@@ -329,10 +329,10 @@ class WindowsAzureFileBackend extends FileBackend {
 		$tmpPath = $tmpFile->getPath();
 
 		try {
-            $this->storageClient->getBlob( $srcCont, $srcRel, $tmpPath );
+			$this->storageClient->getBlob( $srcCont, $srcRel, $tmpPath );
 		}
-        catch ( Exception $e ) {
-            error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
+		catch ( Exception $e ) {
+			error_log( __METHOD__.':'.__LINE__.' '.$e->getMessage() );
 			$tmpFile = null;
 		}
 
