@@ -26,8 +26,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['other'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'WindowsAzureStorage',
-	'author'         => array( 'Hallo Welt! Medienwerkstatt GmbH', 'Markus Glaser', 'Robert Vogel' ),
-	'url'            => 'http://www.hallowelt.biz',
+	'author'         => array( '[http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH]', 'Markus Glaser', 'Robert Vogel' ),
+	'url'            => 'https://www.mediawiki.org/wiki/Extension:WindowsAzureStorage',
 	'version'        => '1.0.0',
 	'descriptionmsg' => 'windowsazurestorage-desc',
 );
