@@ -1,6 +1,6 @@
 <?php
 /*
- (c) Hallo Welt! Medienwerkstatt GmbH together with Microsoft Corp., 2011 GPL
+ (c) Hallo Welt! Medienwerkstatt GmbH, 2011 GPL
  
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

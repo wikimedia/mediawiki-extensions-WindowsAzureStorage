@@ -4,7 +4,7 @@
  * @ingroup FileBackend
  * @author Markus Glaser
  * @author Robert Vogel
- * @author Hallo Welt! - Medienwerkstatt GmbH for Microsoft Corp.
+ * @author Hallo Welt! - Medienwerkstatt GmbH
  */
 
 /**
@@ -80,7 +80,7 @@ class WindowsAzureFileBackend extends FileBackend {
 		}
 		catch ( Exception $e ) {
 			// TODO: Read exception. Are there different ones?
-			$status->fatal( 'backend-fail-put' );
+			$status->fatal( 'backend-fail-store', $dstRel, $dstCont );
 		}
 		return $status;
 	}
@@ -120,7 +120,7 @@ class WindowsAzureFileBackend extends FileBackend {
 			$container = $this->storageClient->getContainer( $srcCont );
 		}
 		catch ( Exception $e ) {
-			$status->fatal( 'backend-fail-internal' );
+			$status->fatal( 'backend-fail-delete', $srcRel );
 			return $status;
 		}
 
