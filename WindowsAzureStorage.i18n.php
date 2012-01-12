@@ -1,14 +1,12 @@
 <?php
 $messages = array();
 
+/** English */
 $messages['en'] = array(
-	'windowsazurestorage-desc' => 'This extension enables MediaWiki to store files in the Windows Azure cloud, using the Windows Azure Storage Service. Provided by [http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH].'
+	'windowsazurestorage-desc' => 'Store files in the Windows Azure cloud, using the Windows Azure Storage Service'
 );
 
-$messages['de-formal'] = array(
-	'windowsazurestorage-desc' => 'Diese Erweiterung erm�glicht es MediaWiki Datien in der Windows Azure cloud �ber den Windows Azure Storage Service zu speichern. Bereitgestellt von [http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH].'
-);
-
+/** German (Deutsch) */
 $messages['de'] = array(
-	'windowsazurestorage-desc' => 'Diese Erweiterung erm�glicht es MediaWiki Datien in der Windows Azure cloud �ber den Windows Azure Storage Service zu speichern. Bereitgestellt von [http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH].'
+	'windowsazurestorage-desc' => 'Speichern von Dateien in der Windows Azure Cloud über den Windows Azure Storage Service'
 );
