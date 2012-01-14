@@ -41,6 +41,13 @@ $messages['hsb'] = array(
 	'windowsazurestorage-desc' => 'Dataje w mróčeli Windows Azure z pomocu słužby Windows Azure Storage składować',
 );
 
+/** Hungarian (Magyar)
+ * @author Dj
+ */
+$messages['hu'] = array(
+	'windowsazurestorage-desc' => 'Fájlok tárolása a Windows Azure felhőben, Windows Azure Storage Service felhasználásával',
+);
+
 /** Interlingua (Interlingua)
  * @author McDutchie
  */
