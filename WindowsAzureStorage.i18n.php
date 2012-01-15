@@ -62,3 +62,10 @@ $messages['mk'] = array(
 	'windowsazurestorage-desc' => 'Складирање на податотеки во облакот Windows Azure, користејќи Windows Azure Storage Service',
 );
 
+/** Piedmontese (Piemontèis)
+ * @author Dragonòt
+ */
+$messages['pms'] = array(
+	'windowsazurestorage-desc' => 'A memorisa archivi ant la nìvola ëd Windws Azure, an dovrand ël Windows Azure Storage Service',
+);
+
