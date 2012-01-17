@@ -34,6 +34,13 @@ $messages['gl'] = array(
 	'windowsazurestorage-desc' => 'Almacena ficheiros na nube Windows Azure, grazas ao servizo de almacenamento Windows Azure',
 );
 
+/** Hebrew (עברית)
+ * @author Amire80
+ */
+$messages['he'] = array(
+	'windowsazurestorage-desc' => 'אחסון קבצים בענן Windows Azure באמצעות שירות האחסון של Windows Azure',
+);
+
 /** Upper Sorbian (Hornjoserbsce)
  * @author Michawiki
  */
