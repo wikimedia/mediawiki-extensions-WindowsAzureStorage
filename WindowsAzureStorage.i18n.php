@@ -6,6 +6,13 @@ $messages['en'] = array(
 	'windowsazurestorage-desc' => 'Store files in the Windows Azure cloud, using the Windows Azure Storage Service'
 );
 
+/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+ * @author Wizardist
+ */
+$messages['be-tarask'] = array(
+	'windowsazurestorage-desc' => 'Захаваньне файлаў у воблаку Windows Azure з выкарыстаньнем Windows Azure Storage Service',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  */
@@ -67,6 +74,13 @@ $messages['ia'] = array(
  */
 $messages['mk'] = array(
 	'windowsazurestorage-desc' => 'Складирање на податотеки во облакот Windows Azure, користејќи Windows Azure Storage Service',
+);
+
+/** Malay (Bahasa Melayu)
+ * @author Anakmalaysia
+ */
+$messages['ms'] = array(
+	'windowsazurestorage-desc' => 'Menyimpan fail dalam awan Windows Azure dengan menggunakan Windows Azure Storage Service',
 );
 
 /** Piedmontese (Piemontèis)
