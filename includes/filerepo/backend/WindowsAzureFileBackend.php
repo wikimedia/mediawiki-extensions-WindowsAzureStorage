@@ -149,7 +149,7 @@ class WindowsAzureFileBackend extends FileBackend {
 
 		// (a) Check if the destination object already exists
 		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
-		if ( $blobExists && empty( $params['overwriteDest'] ) ) { //Blob exists _and_ should not be overridden
+		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
 			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 			return $status;
 		}
