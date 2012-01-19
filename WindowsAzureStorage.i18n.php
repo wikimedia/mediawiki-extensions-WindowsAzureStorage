@@ -84,9 +84,10 @@ $messages['ms'] = array(
 );
 
 /** Piedmontese (Piemontèis)
+ * @author Borichèt
  * @author Dragonòt
  */
 $messages['pms'] = array(
-	'windowsazurestorage-desc' => 'A memorisa archivi ant la nìvola ëd Windws Azure, an dovrand ël Windows Azure Storage Service',
+	'windowsazurestorage-desc' => "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure",
 );
 
