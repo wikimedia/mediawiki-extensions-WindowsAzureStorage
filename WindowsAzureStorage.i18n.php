@@ -83,6 +83,13 @@ $messages['ms'] = array(
 	'windowsazurestorage-desc' => 'Menyimpan fail dalam awan Windows Azure dengan menggunakan Windows Azure Storage Service',
 );
 
+/** Dutch (Nederlands)
+ * @author SPQRobin
+ */
+$messages['nl'] = array(
+	'windowsazurestorage-desc' => 'Bestanden opslaan in de Windows Azure-cloud, door gebruik te maken van de Windows Azure Storage Service',
+);
+
 /** Piedmontese (Piemontèis)
  * @author Borichèt
  * @author Dragonòt
