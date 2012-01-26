@@ -54,18 +54,12 @@ class WindowsAzureFileBackend extends FileBackend {
 	 * @see FileBackend::resolveContainerPath()
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
-		//Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
+		//Azure blob naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
 
 		if ( strlen( urlencode( $relStoragePath ) ) > 1024 ) {
 			return null;
 		}
-		
-		// Get absolute path given the container base dir
-		if ( isset( $this->containerPaths[$container] ) ) {
-			return $this->containerPaths[$container] . "/{$relStoragePath}";
-		}
-		// TODO: Should storagepath not be urlencoded?
-		// TODO: return null
+
 		return $relStoragePath;
 	}
 
@@ -75,11 +69,22 @@ class WindowsAzureFileBackend extends FileBackend {
 	function doStoreInternal( array $params ) {
 		$status = Status::newGood();
 		list( $dstCont, $dstRel ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $dstRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
+		}
+
+		// Check if the destination object already exists
+		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
+		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
+			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+			return $status;
+		}
+		
 		try {
 			$result = $this->storageClient->putBlob( $dstCont, $dstRel, $params['src']);
 		}
 		catch ( Exception $e ) {
-			// TODO: Read exception. Are there different ones?
 			$status->fatal( 'backend-fail-store', $dstRel, $dstCont );
 		}
 		return $status;
@@ -92,8 +97,21 @@ class WindowsAzureFileBackend extends FileBackend {
 		$status = Status::newGood();
 		list( $srcContainer, $srcDir ) = $this->resolveStoragePath( $params['src'] );
 		list( $dstContainer, $dstDir ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $srcDir === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
+			return $status;
+		}
+		if ( $dstDir === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
+		}
+		
+		$blobExists = $this->storageClient->blobExists( $dstContainer, $dstDir );
+		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
+			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+			return $status;
+		}
 
-		// TODO: check for null
 		try {
 			$result = $this->storageClient->copyBlob( $srcContainer, $srcDir, $dstContainer, $dstDir);
 		}
@@ -115,8 +133,8 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 
-		// (a) Check the source container
-		try { //TODO: Unnecessary --> remove (or better, check in resolveStoragePath?)
+		// Check the source container
+		try {
 			$container = $this->storageClient->getContainer( $srcCont );
 		}
 		catch ( Exception $e ) {
@@ -124,7 +142,7 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 
-		// (b) Actually delete the object
+		// Actually delete the object
 		try {
 			$this->storageClient->deleteBlob( $srcCont, $srcRel );
 		}
@@ -147,27 +165,25 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 
-		// (a) Check if the destination object already exists
+		// Check if the destination object already exists
 		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
 		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
 			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 			return $status;
 		}
 
-		// (b) Actually create the object
+		// Actually create the object
 		try {
-			// TODO: how do I know the container exists? Should we call prepare?
 			$this->storageClient->putBlobData( $dstCont, $dstRel, $params['content'] );
 		}
 		catch ( Exception $e ) {
 			$status->fatal( 'backend-fail-internal' );
 		}
-
 		return $status;
 	}
 
 	/**
-	 * @see FileBackend::prepare()
+	 * @see FileBackend::doPrepare()
 	 */
 
 	function doPrepareInternal( $container, $dir, array $params ) {
@@ -180,13 +196,7 @@ class WindowsAzureFileBackend extends FileBackend {
 		}
 		try {
 			$this->storageClient->createContainerIfNotExists( $c );
-			// TODO: must this be set anytime prepare is called?
 			$this->storageClient->setContainerAcl( $c, Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC );
-
-			// TODO: check if readable and writeable
-			//$container = $this->storageClient->getContainer( $c );
-			//$status->fatal( 'directoryreadonlyerror', $params['dir'] );
-			//$status->fatal( 'directorynotreadableerror', $params['dir'] );
 		}
 		catch (Exception $e ) {
 			$status->fatal( 'directorycreateerror', $params['dir'] );
@@ -203,7 +213,8 @@ class WindowsAzureFileBackend extends FileBackend {
 		//Azure container naming conventions; http://msdn.microsoft.com/en-us/library/dd135715.aspx
 		$container = strtolower($container);
 		$container = preg_replace( '#[^a-z0-9\-]#', '', $container );
-		// TODO: "-test" and "test-" are invalid, too
+		$container = preg_replace( '#^-#', '', $container );
+		$container = preg_replace( '#-$#', '', $container );
 		$container = preg_replace( '#-{2,}#', '-', $container );
 
 		return $container;
@@ -212,20 +223,27 @@ class WindowsAzureFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::secure()
 	 */
-	/*
-	// TODO: check if we need to override doSecure
-	function secure( array $params ) {
+	function doSecureInternal( $container, $dir, array $params ) {
 		$status = Status::newGood();
-		return $status; // badgers? We don't need no steenking badgers!
+
+		try {
+			if ( $this->storageClient->containerExists( $container ) ) {
+				if ( $params['noAccess'] == true ) {
+					$this->storageClient->setContainerAcl( $container, Microsoft_WindowsAzure_Storage_Blob::ACL_PRIVATE );
+				}
+			}
+		}
+		catch (Exception $e ) {
+			$status->fatal( 'directorycreateerror', $container );
+			return $status;
+		}
+		return $status;
 	}
-	*/
 
 	/**
 	 * @see FileBackend::fileExists()
 	 */
-	function doFileExists( array $params ) {die();
-		// TODO: Merely renamed this functino from fileExists. Check if more is neccessarey
-		// TODO: Off topic here: Prepare function might call some internal function which can be overridden.
+	function doFileExists( array $params ) {
 		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
@@ -236,45 +254,34 @@ class WindowsAzureFileBackend extends FileBackend {
 	}
 
 	/**
-	 * @see FileBackend::getFileTimestamp()
-	 */
-	// TODO: merely renamed from getFileTimestamp. Check if there are any probs.
-	// TODO: Is this method still used?
-	function doGetFileTimestamp( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
-		if ( $srcRel === null ) {
-			return false; // invalid storage path
-		}
-
-		$timestamp= false;
-		try {
-			//TODO Maybe use getBlobData()?
-			$blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
-			$timestamp = wfTimestamp( TS_MW, $blob->LastModified ); //TODO: Timezone?
-		} catch ( Exception $e ) {
-			// TODO: Log it? What about different types of exceptions?
-		}
-		return $timestamp;
-	}
-
-	/**
 	 * @see FileBackend::getFileList()
 	 */
 	function getFileListInternal( $container, $dir, array $params ) {
-		// TODO: merely renamed from getFileList. Check implications (i assume, the list thing is no longer needed.
-		//list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		$files = array();
+		
 		try {
-			if ( $dir === null ) {
+			if ( trim($dir) == '' ) {
 				$blobs = $this->storageClient->listBlobs($container);
 			}
 			else {
-				//TODO: Check if $dir really is a startsequence of the blob name
+				if ( strrpos($dir, '/') != strlen($dir)-1 ) {
+					$dir = $dir.'/';
+				}
 				$blobs = $this->storageClient->listBlobs($container, $dir);
 			}
 
 			foreach( $blobs as $blob ) {
-				$files[] = $blob->name;
+				// Only return the actual file name without the /
+				$tempName = $blob->name;
+				if ( trim($dir) != '' ) {
+					if ( strstr( $tempName, $dir ) !== false ) {
+						$tempName = substr($tempName, strpos( $tempName, $dir ) + strlen( $dir ) );
+						$files[] = $tempName;
+					}
+				} else {
+					$files[] = $tempName;
+				}
+				
 			}
 		}
 		catch( Exception $e ) {
@@ -297,7 +304,6 @@ class WindowsAzureFileBackend extends FileBackend {
 		// Get source file extension
 		$ext = FileBackend::extensionFromPath( $srcRel );
 		// Create a new temporary file...
-		// TODO: Caution: tempfile should not write a local file.
 		$tmpFile = TempFSFile::factory( wfBaseName( $srcRel ) . '_', $ext );
 		if ( !$tmpFile ) {
 			return null;
@@ -308,17 +314,16 @@ class WindowsAzureFileBackend extends FileBackend {
 			$this->storageClient->getBlob( $srcCont, $srcRel, $tmpPath );
 		}
 		catch ( Exception $e ) {
-			$tmpFile = null;
+			return null;
 		}
 
 		return $tmpFile;
 	}
 	
 	/**
-	 * @see FileBackend::doFileExists()
+	 * @see FileBackend::getFileStat()
 	 */
 	protected function doGetFileStat( array $params ) {
-		// TODO: Refactor
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
@@ -326,19 +331,39 @@ class WindowsAzureFileBackend extends FileBackend {
 
 		$timestamp= false;
 		$size = false;
-		// TODO: need additional checks??
+
 		try {
-			// TODO: Maybe use getBlobData()?
 			$blob = $this->storageClient->getBlobInstance( $srcCont, $srcRel );
-			$timestamp = wfTimestamp( TS_MW, $blob->LastModified ); //TODO: Timezone?
+			$timestamp = wfTimestamp( TS_MW, $blob->LastModified );
 			$size = $blob->Size;
 			return array(
 				'mtime' => $timestamp,
 				'size'  => $size
 			);
 		} catch ( Exception $e ) { 
-			// TODO: Log it? What about different types of exceptions?
+			$stat = null;
 		}
 		return false;
+	}
+	
+		/**
+	 * Check if a file can be created at a given storage path.
+	 * FS backends should check if the parent directory exists and the file is writable.
+	 * Backends using key/value stores should check if the container exists.
+	 *
+	 * @param $storagePath string
+	 * @return bool
+	 */
+	
+	public function isPathUsableInternal( $storagePath ) {
+		list( $c, $dir ) = $this->resolveStoragePath( $storagePath );
+		if ( $dir === null ) {
+			return false;
+		}
+		if ( !$this->storageClient->containerExists( $c ) ) {
+			return false;
+		}
+		
+		return true;
 	}
 }
