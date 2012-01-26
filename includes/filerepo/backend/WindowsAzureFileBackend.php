@@ -74,11 +74,12 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 
-		// Check if the destination object already exists
-		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
-		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
-			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-			return $status;
+		if ( empty( $params['overwrite'] ) ) { //Blob should not be overridden
+			// Check if the destination object already exists
+			if ( $this->storageClient->blobExists( $dstCont, $dstRel ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
 		}
 		
 		try {
@@ -106,10 +107,11 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 		
-		$blobExists = $this->storageClient->blobExists( $dstContainer, $dstDir );
-		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
-			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-			return $status;
+		if ( empty( $params['overwrite'] ) ) { //Blob should not be overridden
+			if ( $this->storageClient->blobExists( $dstContainer, $dstDir ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
 		}
 
 		try {
@@ -165,11 +167,12 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 
-		// Check if the destination object already exists
-		$blobExists = $this->storageClient->blobExists( $dstCont, $dstRel );
-		if ( $blobExists && empty( $params['overwrite'] ) ) { //Blob exists _and_ should not be overridden
-			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-			return $status;
+		if ( empty( $params['overwrite'] ) ) { //Blob should not be overridden
+			// Check if the destination object already exists
+			if ( $this->storageClient->blobExists( $dstCont, $dstRel ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
 		}
 
 		// Actually create the object
@@ -238,19 +241,6 @@ class WindowsAzureFileBackend extends FileBackend {
 			return $status;
 		}
 		return $status;
-	}
-
-	/**
-	 * @see FileBackend::fileExists()
-	 */
-	function doFileExists( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
-		if ( $srcRel === null ) {
-			return false; // invalid storage path
-		}
-
-		$exists = $this->storageClient->blobExists( $srcCont, $srcRel );
-		return $exists;
 	}
 
 	/**
