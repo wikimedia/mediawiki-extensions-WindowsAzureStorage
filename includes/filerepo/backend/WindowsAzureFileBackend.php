@@ -22,7 +22,7 @@
  *
  * @ingroup FileBackend
  */
-class WindowsAzureFileBackend extends FileBackend {
+class WindowsAzureFileBackend extends FileBackendStore {
 	
 	/** @var Microsoft_WindowsAzure_Storage_Blob */
 	protected $storageClient = null;
