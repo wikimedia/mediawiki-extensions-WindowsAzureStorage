@@ -27,6 +27,13 @@ $messages['dsb'] = array(
 	'windowsazurestorage-desc' => 'Dataje w mrokawje Windows Azure z pomocu słužby Windows Azure Storage składowaś',
 );
 
+/** Spanish (Español)
+ * @author Armando-Martin
+ */
+$messages['es'] = array(
+	'windowsazurestorage-desc' => 'Almacena archivos en la nube Windows Azure, gracias al servicio de almacenamento Windows Azure',
+);
+
 /** French (Français)
  * @author Gomoko
  */
