@@ -76,6 +76,13 @@ $messages['ia'] = array(
 	'windowsazurestorage-desc' => 'Immagazinar files in "Windows Azure cloud", usante le servicio de immagazinage "Windows Azure"',
 );
 
+/** Japanese (日本語)
+ * @author Shirayuki
+ */
+$messages['ja'] = array(
+	'windowsazurestorage-desc' => 'Windows Azure ストレージサービスを使用して、Windows Azure クラウドにファイルを保存する',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
