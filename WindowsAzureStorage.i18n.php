@@ -76,7 +76,7 @@ $messages['ia'] = array(
 	'windowsazurestorage-desc' => 'Immagazinar files in "Windows Azure cloud", usante le servicio de immagazinage "Windows Azure"',
 );
 
-/** Italian (Italiano)
+/** Italian (italiano)
  * @author Beta16
  */
 $messages['it'] = array(
