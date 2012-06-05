@@ -6,6 +6,13 @@ $messages['en'] = array(
 	'windowsazurestorage-desc' => 'Store files in the Windows Azure cloud, using the Windows Azure Storage Service'
 );
 
+/** Message documentation (Message documentation)
+ * @author Purodha
+ */
+$messages['qqq'] = array(
+	'windowsazurestorage-desc' => '{{desc}}',
+);
+
 /** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
  * @author Wizardist
  */
@@ -88,6 +95,13 @@ $messages['it'] = array(
  */
 $messages['ja'] = array(
 	'windowsazurestorage-desc' => 'Windows Azure ストレージサービスを使用して、Windows Azure クラウドにファイルを保存する',
+);
+
+/** Colognian (Ripoarisch)
+ * @author Purodha
+ */
+$messages['ksh'] = array(
+	'windowsazurestorage-desc' => 'Deiht Datteije en dem <i lang="en">Windows</i> singe <i lang="en">Azure cloud</i> afflääje, un dat övver dem <i lang="en">Windows</i> singe <i lang="en">Azure</i>-Schpeischerdeens.',
 );
 
 /** Macedonian (Македонски)
