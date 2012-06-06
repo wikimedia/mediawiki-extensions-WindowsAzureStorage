@@ -97,6 +97,13 @@ $messages['ja'] = array(
 	'windowsazurestorage-desc' => 'Windows Azure ストレージサービスを使用して、Windows Azure クラウドにファイルを保存する',
 );
 
+/** Korean (한국어)
+ * @author 아라
+ */
+$messages['ko'] = array(
+	'windowsazurestorage-desc' => 'Windows Azure 스토리지 서비스를 사용하여 Windows Azure 클라우드에 파일 저장',
+);
+
 /** Colognian (Ripoarisch)
  * @author Purodha
  */
