@@ -34,14 +34,14 @@ $messages['dsb'] = array(
 	'windowsazurestorage-desc' => 'Dataje w mrokawje Windows Azure z pomocu słužby Windows Azure Storage składowaś',
 );
 
-/** Spanish (Español)
+/** Spanish (español)
  * @author Armando-Martin
  */
 $messages['es'] = array(
 	'windowsazurestorage-desc' => 'Almacena archivos en la nube Windows Azure, gracias al servicio de almacenamento Windows Azure',
 );
 
-/** French (Français)
+/** French (français)
  * @author Gomoko
  */
 $messages['fr'] = array(
@@ -69,14 +69,14 @@ $messages['hsb'] = array(
 	'windowsazurestorage-desc' => 'Dataje w mróčeli Windows Azure z pomocu słužby Windows Azure Storage składować',
 );
 
-/** Hungarian (Magyar)
+/** Hungarian (magyar)
  * @author Dj
  */
 $messages['hu'] = array(
 	'windowsazurestorage-desc' => 'Fájlok tárolása a Windows Azure felhőben, Windows Azure Storage Service felhasználásával',
 );
 
-/** Interlingua (Interlingua)
+/** Interlingua (interlingua)
  * @author McDutchie
  */
 $messages['ia'] = array(
@@ -111,7 +111,7 @@ $messages['ksh'] = array(
 	'windowsazurestorage-desc' => 'Deiht Datteije en dem <i lang="en">Windows</i> singe <i lang="en">Azure cloud</i> afflääje, un dat övver dem <i lang="en">Windows</i> singe <i lang="en">Azure</i>-Schpeischerdeens.',
 );
 
-/** Macedonian (Македонски)
+/** Macedonian (македонски)
  * @author Bjankuloski06
  */
 $messages['mk'] = array(
@@ -132,7 +132,7 @@ $messages['nl'] = array(
 	'windowsazurestorage-desc' => 'Bestanden opslaan in de Windows Azure-cloud, door gebruik te maken van de Windows Azure Storage Service',
 );
 
-/** Polish (Polski)
+/** Polish (polski)
  * @author BeginaFelicysym
  */
 $messages['pl'] = array(
@@ -145,5 +145,12 @@ $messages['pl'] = array(
  */
 $messages['pms'] = array(
 	'windowsazurestorage-desc' => "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure",
+);
+
+/** Tagalog (Tagalog)
+ * @author AnakngAraw
+ */
+$messages['tl'] = array(
+	'windowsazurestorage-desc' => 'Iimbak ang mga talaksang nasa ulap ng Windows Azure, na ginagamit ang Palingkuran ng Pag-iimbak ng Windows Azure',
 );
 
