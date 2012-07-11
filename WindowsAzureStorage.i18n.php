@@ -13,7 +13,7 @@ $messages['qqq'] = array(
 	'windowsazurestorage-desc' => '{{desc}}',
 );
 
-/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
  * @author Wizardist
  */
 $messages['be-tarask'] = array(
@@ -27,7 +27,7 @@ $messages['de'] = array(
 	'windowsazurestorage-desc' => 'Ermöglicht das Speichern von Dateien in der Windows-Azure-Cloud über den Windows-Azure-Storage-Service',
 );
 
-/** Lower Sorbian (Dolnoserbski)
+/** Lower Sorbian (dolnoserbski)
  * @author Michawiki
  */
 $messages['dsb'] = array(
@@ -48,7 +48,7 @@ $messages['fr'] = array(
 	'windowsazurestorage-desc' => 'Stocker les fichiers dans le nuage Windows Azure, en utilisant le service de stockage Azure de Windows',
 );
 
-/** Galician (Galego)
+/** Galician (galego)
  * @author Toliño
  */
 $messages['gl'] = array(
@@ -62,7 +62,7 @@ $messages['he'] = array(
 	'windowsazurestorage-desc' => 'אחסון קבצים בענן Windows Azure באמצעות שירות האחסון של Windows Azure',
 );
 
-/** Upper Sorbian (Hornjoserbsce)
+/** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
 $messages['hsb'] = array(
