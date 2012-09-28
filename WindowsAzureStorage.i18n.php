@@ -20,6 +20,13 @@ $messages['be-tarask'] = array(
 	'windowsazurestorage-desc' => 'Захаваньне файлаў у воблаку Windows Azure з выкарыстаньнем Windows Azure Storage Service',
 );
 
+/** Breton (brezhoneg)
+ * @author Fulup
+ */
+$messages['br'] = array(
+	'windowsazurestorage-desc' => 'Stokañ ar restroù er goumoulenn Windows Azure, en ur ober gant servij stokañ Azure Windows',
+);
+
 /** Danish (dansk)
  * @author Hylle
  */
