@@ -167,4 +167,3 @@ $messages['pms'] = array(
 $messages['tl'] = array(
 	'windowsazurestorage-desc' => 'Iimbak ang mga talaksang nasa ulap ng Windows Azure, na ginagamit ang Palingkuran ng Pag-iimbak ng Windows Azure',
 );
-
