@@ -167,3 +167,10 @@ $messages['pms'] = array(
 $messages['tl'] = array(
 	'windowsazurestorage-desc' => 'Iimbak ang mga talaksang nasa ulap ng Windows Azure, na ginagamit ang Palingkuran ng Pag-iimbak ng Windows Azure',
 );
+
+/** Ukrainian (українська)
+ * @author Base
+ */
+$messages['uk'] = array(
+	'windowsazurestorage-desc' => 'Збігає файли у хмарі Windows Azure використовуючи Windows Azure Storage Service',
+);
