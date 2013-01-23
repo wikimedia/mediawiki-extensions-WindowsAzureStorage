@@ -174,3 +174,10 @@ $messages['tl'] = array(
 $messages['uk'] = array(
 	'windowsazurestorage-desc' => 'Збігає файли у хмарі Windows Azure використовуючи Windows Azure Storage Service',
 );
+
+/** Simplified Chinese (中文（简体）‎)
+ * @author Yfdyh000
+ */
+$messages['zh-hans'] = array(
+	'windowsazurestorage-desc' => '将文件存储在Windows Azure云，使用Windows Azure Storage服务',
+);
