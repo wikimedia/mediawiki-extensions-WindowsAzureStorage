@@ -161,6 +161,13 @@ $messages['pms'] = array(
 	'windowsazurestorage-desc' => "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure",
 );
 
+/** tarandíne (tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'windowsazurestorage-desc' => "Stipe le file jndr'à nuvole de Windows Azure, ausanne l'u Servizie de Stipamende Windows Azure",
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
