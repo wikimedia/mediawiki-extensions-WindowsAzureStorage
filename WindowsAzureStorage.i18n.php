@@ -8,9 +8,10 @@ $messages['en'] = array(
 
 /** Message documentation (Message documentation)
  * @author Purodha
+ * @author Shirayuki
  */
 $messages['qqq'] = array(
-	'windowsazurestorage-desc' => '{{desc}}',
+	'windowsazurestorage-desc' => '{{desc|name=Windows Azure Storage|url=http://www.mediawiki.org/wiki/Extension:WindowsAzureStorage}}',
 );
 
 /** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
