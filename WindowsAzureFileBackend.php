@@ -355,6 +355,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		try {
+			// @TODO: pass $metadata to addMissingMetadata() to avoid round-trips
 			$this->addMissingMetadata( $srcCont, $srcRel, $params['src'] );
 			$properties = $this->proxy->getBlobProperties( $srcCont, $srcRel );
 			$timestamp = $properties->getProperties()->getLastModified()->getTimestamp();
@@ -412,6 +413,8 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 		trigger_error( "Unable to set SHA-1 metadata for $path", E_USER_WARNING );
 		// Set the SHA-1 metadata to 0 (setting to false doesn't seem to work)
+		// @TODO: don't permanently set the object metadata here, just make sure this PHP
+		//        request doesn't keep trying to download the file again and again.
 		$this->proxy->setBlobMetadata( $srcCont, $srcRel, array( 'sha1base36' => 0 ) );
 		wfProfileOut( __METHOD__ );
 		return false; // failed
@@ -481,6 +484,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 			if ( !empty( $params['topOnly'] ) ) {
 				// Blobs are listed in alphabetical order in the response body, with
 				// upper-case letters listed first.
+				// @TODO: use prefix+delimeter here
 				$blobs = $this->proxy->listBlobs( $fullCont, $options )->getBlobs();
 				foreach ( $blobs as $blob ) {
 					$name = $blob->getName();
