@@ -56,6 +56,13 @@ $messages['es'] = array(
 	'windowsazurestorage-desc' => 'Almacena archivos en la nube Windows Azure, gracias al servicio de almacenamento Windows Azure',
 );
 
+/** Finnish (suomi)
+ * @author Silvonen
+ */
+$messages['fi'] = array(
+	'windowsazurestorage-desc' => 'Tallentaa tiedostoja Windows Azure -pilveen Windows Azure -tallennuspalvelun avulla',
+);
+
 /** French (français)
  * @author Gomoko
  */
