@@ -14,6 +14,13 @@ $messages['qqq'] = array(
 	'windowsazurestorage-desc' => '{{desc|name=Windows Azure Storage|url=http://www.mediawiki.org/wiki/Extension:WindowsAzureStorage}}',
 );
 
+/** Asturian (asturianu)
+ * @author Xuacu
+ */
+$messages['ast'] = array(
+	'windowsazurestorage-desc' => "Almacena ficheros na nube Windows Azure, usando'l serviciu d'almacenamientu Windows Azure",
+);
+
 /** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author Wizardist
  */
