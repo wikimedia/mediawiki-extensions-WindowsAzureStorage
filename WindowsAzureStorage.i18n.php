@@ -203,3 +203,10 @@ $messages['uk'] = array(
 $messages['zh-hans'] = array(
 	'windowsazurestorage-desc' => '将文件存储在Windows Azure云，使用Windows Azure Storage服务',
 );
+
+/** Traditional Chinese (中文（繁體）‎)
+ * @author Justincheng12345
+ */
+$messages['zh-hant'] = array(
+	'windowsazurestorage-desc' => '將檔案存儲於Windows Azure雲計算，使用Windows Azure存儲服務',
+);
