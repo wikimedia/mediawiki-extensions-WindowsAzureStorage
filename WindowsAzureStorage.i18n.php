@@ -161,6 +161,13 @@ $messages['nl'] = array(
 	'windowsazurestorage-desc' => 'Bestanden opslaan in de Windows Azure-cloud, door gebruik te maken van de Windows Azure Storage Service',
 );
 
+/** Occitan (occitan)
+ * @author Cedric31
+ */
+$messages['oc'] = array(
+	'windowsazurestorage-desc' => "Emmagazinar los fichièrs dins la nívol Windows Azure, en utilizant lo servici d'emmagazinatge Azure de Windows",
+);
+
 /** Polish (polski)
  * @author BeginaFelicysym
  */
