@@ -183,6 +183,13 @@ $messages['pms'] = array(
 	'windowsazurestorage-desc' => "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure",
 );
 
+/** Brazilian Portuguese (português do Brasil)
+ * @author Cainamarques
+ */
+$messages['pt-br'] = array(
+	'windowsazurestorage-desc' => 'Armazena arquivos na nuvem utilizando o serviço de armazenamento do Windows Azure',
+);
+
 /** tarandíne (tarandíne)
  * @author Joetaras
  */
