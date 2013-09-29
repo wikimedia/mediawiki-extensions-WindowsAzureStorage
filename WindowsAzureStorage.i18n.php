@@ -197,6 +197,13 @@ $messages['roa-tara'] = array(
 	'windowsazurestorage-desc' => "Stipe le file jndr'à nuvole de Windows Azure, ausanne l'u Servizie de Stipamende Windows Azure",
 );
 
+/** Russian (русский)
+ * @author Okras
+ */
+$messages['ru'] = array(
+	'windowsazurestorage-desc' => 'Сохраняет файлы в облаке Windows Azure, используя Windows Azure Storage Service',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
