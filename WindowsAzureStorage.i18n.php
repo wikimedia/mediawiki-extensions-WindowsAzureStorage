@@ -63,6 +63,13 @@ $messages['es'] = array(
 	'windowsazurestorage-desc' => 'Almacena archivos en la nube Windows Azure, gracias al servicio de almacenamento Windows Azure',
 );
 
+/** Persian (فارسی)
+ * @author Ebraminio
+ */
+$messages['fa'] = array(
+	'windowsazurestorage-desc' => 'ذخیره‌سازی پرونده‌ها در ابر ویندوز آژور، با استفاده از حدمت حافظهٔ ویندوز آژور.',
+);
+
 /** Finnish (suomi)
  * @author Silvonen
  */
