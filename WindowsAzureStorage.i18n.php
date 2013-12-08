@@ -218,6 +218,13 @@ $messages['tl'] = array(
 	'windowsazurestorage-desc' => 'Iimbak ang mga talaksang nasa ulap ng Windows Azure, na ginagamit ang Palingkuran ng Pag-iimbak ng Windows Azure',
 );
 
+/** Turkish (Türkçe)
+ * @author Joseph
+ */
+$messages['tr'] = array(
+	'windowsazurestorage-desc' => 'Windows Azure Depolama Servisini kullanarak, Windows Azure bulutunda dosyalar depolar',
+);
+
 /** Ukrainian (українська)
  * @author Base
  */
