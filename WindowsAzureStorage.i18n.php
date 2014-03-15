@@ -211,6 +211,13 @@ $messages['ru'] = array(
 	'windowsazurestorage-desc' => 'Сохраняет файлы в облаке Windows Azure, используя Windows Azure Storage Service',
 );
 
+/** Swedish (svenska)
+ * @author WikiPhoenix
+ */
+$messages['sv'] = array(
+	'windowsazurestorage-desc' => 'Lagra filer i Windows Azure-molnet med Windows Azures lagringstjänst',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
