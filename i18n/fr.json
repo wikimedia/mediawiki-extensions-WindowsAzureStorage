@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Gomoko"
+        ]
+    },
+    "windowsazurestorage-desc": "Stocker les fichiers dans le nuage Windows Azure, en utilisant le service de stockage Azure de Windows"
+}
