@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Justincheng12345"
-        ]
-    },
-    "windowsazurestorage-desc": "將檔案存儲於Windows Azure雲計算，使用Windows Azure存儲服務"
+	"@metadata": {
+		"authors": [
+			"Justincheng12345"
+		]
+	},
+	"windowsazurestorage-desc": "將檔案存儲於Windows Azure雲計算，使用Windows Azure存儲服務"
 }

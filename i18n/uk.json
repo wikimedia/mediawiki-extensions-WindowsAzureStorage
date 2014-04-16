@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Base"
-        ]
-    },
-    "windowsazurestorage-desc": "Збігає файли у хмарі Windows Azure використовуючи Windows Azure Storage Service"
+	"@metadata": {
+		"authors": [
+			"Base"
+		]
+	},
+	"windowsazurestorage-desc": "Збігає файли у хмарі Windows Azure використовуючи Windows Azure Storage Service"
 }

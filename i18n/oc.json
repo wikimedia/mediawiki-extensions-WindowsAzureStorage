@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Cedric31"
-        ]
-    },
-    "windowsazurestorage-desc": "Emmagazinar los fichièrs dins la nívol Windows Azure, en utilizant lo servici d'emmagazinatge Azure de Windows"
+	"@metadata": {
+		"authors": [
+			"Cedric31"
+		]
+	},
+	"windowsazurestorage-desc": "Emmagazinar los fichièrs dins la nívol Windows Azure, en utilizant lo servici d'emmagazinatge Azure de Windows"
 }

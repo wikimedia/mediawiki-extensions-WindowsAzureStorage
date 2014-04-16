@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Borichèt",
-            "Dragonòt"
-        ]
-    },
-    "windowsazurestorage-desc": "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure"
+	"@metadata": {
+		"authors": [
+			"Borichèt",
+			"Dragonòt"
+		]
+	},
+	"windowsazurestorage-desc": "A memorisa j'archivi ant la nìvola ëd Windows Azure, an dovrand ël servissi d'archiviassion Windows Azure"
 }

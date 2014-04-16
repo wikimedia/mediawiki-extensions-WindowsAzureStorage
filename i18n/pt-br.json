@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Cainamarques"
-        ]
-    },
-    "windowsazurestorage-desc": "Armazena arquivos na nuvem utilizando o serviço de armazenamento do Windows Azure"
+	"@metadata": {
+		"authors": [
+			"Cainamarques"
+		]
+	},
+	"windowsazurestorage-desc": "Armazena arquivos na nuvem utilizando o serviço de armazenamento do Windows Azure"
 }

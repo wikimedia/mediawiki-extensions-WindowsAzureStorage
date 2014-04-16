@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Yfdyh000"
-        ]
-    },
-    "windowsazurestorage-desc": "将文件存储在Windows Azure云，使用Windows Azure Storage服务"
+	"@metadata": {
+		"authors": [
+			"Yfdyh000"
+		]
+	},
+	"windowsazurestorage-desc": "将文件存储在Windows Azure云，使用Windows Azure Storage服务"
 }

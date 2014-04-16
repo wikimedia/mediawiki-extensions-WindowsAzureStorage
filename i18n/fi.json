@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Silvonen"
-        ]
-    },
-    "windowsazurestorage-desc": "Tallentaa tiedostoja Windows Azure -pilveen Windows Azure -tallennuspalvelun avulla"
+	"@metadata": {
+		"authors": [
+			"Silvonen"
+		]
+	},
+	"windowsazurestorage-desc": "Tallentaa tiedostoja Windows Azure -pilveen Windows Azure -tallennuspalvelun avulla"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Okras"
-        ]
-    },
-    "windowsazurestorage-desc": "Сохраняет файлы в облаке Windows Azure, используя Windows Azure Storage Service"
+	"@metadata": {
+		"authors": [
+			"Okras"
+		]
+	},
+	"windowsazurestorage-desc": "Сохраняет файлы в облаке Windows Azure, используя Windows Azure Storage Service"
 }

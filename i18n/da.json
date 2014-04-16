@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Hylle"
-        ]
-    },
-    "windowsazurestorage-desc": "Gemmer filer i Windows Azure skyen, ved brug af Windows Azure Storage Service"
+	"@metadata": {
+		"authors": [
+			"Hylle"
+		]
+	},
+	"windowsazurestorage-desc": "Gemmer filer i Windows Azure skyen, ved brug af Windows Azure Storage Service"
 }

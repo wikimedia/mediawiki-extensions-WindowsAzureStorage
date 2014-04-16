@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Shirayuki"
-        ]
-    },
-    "windowsazurestorage-desc": "Windows Azure ストレージサービスを使用して、Windows Azure クラウドにファイルを保存する"
+	"@metadata": {
+		"authors": [
+			"Shirayuki"
+		]
+	},
+	"windowsazurestorage-desc": "Windows Azure ストレージサービスを使用して、Windows Azure クラウドにファイルを保存する"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "아라"
-        ]
-    },
-    "windowsazurestorage-desc": "Windows Azure 저장소 서비스를 사용하여 Windows Azure 클라우드에 파일 저장"
+	"@metadata": {
+		"authors": [
+			"아라"
+		]
+	},
+	"windowsazurestorage-desc": "Windows Azure 저장소 서비스를 사용하여 Windows Azure 클라우드에 파일 저장"
 }

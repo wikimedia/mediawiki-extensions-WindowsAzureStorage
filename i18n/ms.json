@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Anakmalaysia"
-        ]
-    },
-    "windowsazurestorage-desc": "Menyimpan fail dalam awan Windows Azure dengan menggunakan Windows Azure Storage Service"
+	"@metadata": {
+		"authors": [
+			"Anakmalaysia"
+		]
+	},
+	"windowsazurestorage-desc": "Menyimpan fail dalam awan Windows Azure dengan menggunakan Windows Azure Storage Service"
 }

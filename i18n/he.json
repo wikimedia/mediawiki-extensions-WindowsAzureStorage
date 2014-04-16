@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Amire80"
-        ]
-    },
-    "windowsazurestorage-desc": "אחסון קבצים בענן Windows Azure באמצעות שירות האחסון של Windows Azure"
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"windowsazurestorage-desc": "אחסון קבצים בענן Windows Azure באמצעות שירות האחסון של Windows Azure"
 }

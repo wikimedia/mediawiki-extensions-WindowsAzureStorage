@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Michawiki"
-        ]
-    },
-    "windowsazurestorage-desc": "Dataje w mróčeli Windows Azure z pomocu słužby Windows Azure Storage składować"
+	"@metadata": {
+		"authors": [
+			"Michawiki"
+		]
+	},
+	"windowsazurestorage-desc": "Dataje w mróčeli Windows Azure z pomocu słužby Windows Azure Storage składować"
 }

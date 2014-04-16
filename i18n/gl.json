@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Toliño"
-        ]
-    },
-    "windowsazurestorage-desc": "Almacena ficheiros na nube Windows Azure, grazas ao servizo de almacenamento Windows Azure"
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"windowsazurestorage-desc": "Almacena ficheiros na nube Windows Azure, grazas ao servizo de almacenamento Windows Azure"
 }

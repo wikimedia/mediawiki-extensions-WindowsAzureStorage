@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Fulup"
-        ]
-    },
-    "windowsazurestorage-desc": "Stokañ ar restroù er goumoulenn Windows Azure, en ur ober gant servij stokañ Azure Windows"
+	"@metadata": {
+		"authors": [
+			"Fulup"
+		]
+	},
+	"windowsazurestorage-desc": "Stokañ ar restroù er goumoulenn Windows Azure, en ur ober gant servij stokañ Azure Windows"
 }

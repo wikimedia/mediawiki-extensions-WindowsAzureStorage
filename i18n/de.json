@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Kghbln"
-        ]
-    },
-    "windowsazurestorage-desc": "Ermöglicht das Speichern von Dateien in der Windows-Azure-Cloud über den Windows-Azure-Storage-Service"
+	"@metadata": {
+		"authors": [
+			"Kghbln"
+		]
+	},
+	"windowsazurestorage-desc": "Ermöglicht das Speichern von Dateien in der Windows-Azure-Cloud über den Windows-Azure-Storage-Service"
 }
