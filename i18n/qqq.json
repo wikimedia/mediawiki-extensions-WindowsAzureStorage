@@ -2,8 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Purodha",
-			"Shirayuki"
+			"Shirayuki",
+			"Umherirrender"
 		]
 	},
-	"windowsazurestorage-desc": "{{desc|name=Windows Azure Storage|url=http://www.mediawiki.org/wiki/Extension:WindowsAzureStorage}}"
+	"windowsazurestorage-desc": "{{desc|name=Windows Azure Storage|url=https://www.mediawiki.org/wiki/Extension:WindowsAzureStorage}}"
 }
