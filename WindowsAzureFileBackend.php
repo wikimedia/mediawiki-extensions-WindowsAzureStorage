@@ -134,7 +134,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		// (a) Get a SHA-1 hash of the object
-		$sha1Hash = wfBaseConvert( sha1( $params['content'] ), 16, 36, 31 );
+		$sha1Hash = Wikimedia\base_convert( sha1( $params['content'] ), 16, 36, 31 );
 
 		// (b) Actually create the object
 		try {
@@ -176,7 +176,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 			$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			return $status;
 		}
-		$sha1Hash = wfBaseConvert( $sha1Hash, 16, 36, 31 );
+		$sha1Hash = Wikimedia\base_convert( $sha1Hash, 16, 36, 31 );
 
 		// (b) Actually store the object
 		try {
