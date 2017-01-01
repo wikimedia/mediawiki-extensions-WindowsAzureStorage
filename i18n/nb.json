@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"windowsazurestorage-desc": "Lagre filer i Windows Azure-skyen med Windows Azure Storage Service"
+}
