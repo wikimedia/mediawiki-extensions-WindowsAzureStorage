@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamilton Abreu"
+		]
+	},
+	"windowsazurestorage-desc": "Armazena ficheiros na nuvem Windows Azure, usando o Windows Azure Storage Service"
+}
