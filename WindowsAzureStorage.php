@@ -17,7 +17,6 @@ $wgExtensionCredits['other'][] = array(
 );
 
 $wgMessagesDirs['WindowsAzureStorage'] = __DIR__ . '/i18n';
-$wgExtensionMessagesFiles['WindowsAzureStorage'] = $dir . 'WindowsAzureStorage.i18n.php';
 
 $wgAutoloadClasses['WindowsAzureFileBackend'] = $dir . 'WindowsAzureFileBackend.php';
 $wgAutoloadClasses['AzureFileBackendList'] = $dir . 'WindowsAzureFileBackend.php';
