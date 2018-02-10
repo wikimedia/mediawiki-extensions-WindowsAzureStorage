@@ -396,7 +396,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		if ( isset( $metadata['sha1base36'] ) ) {
 			return true; // nothing to do
 		}
-		wfProfileIn( __METHOD__ );
 		trigger_error( "$path was not stored with SHA-1 metadata.", E_USER_WARNING );
 		$status = Status::newGood();
 		$scopeLockS = $this->getScopedFileLocks( array( $path ), LockManager::LOCK_UW, $status );
@@ -406,7 +405,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 				$hash = $tmpFile->getSha1Base36();
 				if ( $hash !== false ) {
 					$this->proxy->setBlobMetadata( $srcCont, $srcRel, array( 'sha1base36' => $hash ) );
-					wfProfileOut( __METHOD__ );
 					return true; // success
 				}
 			}
@@ -416,7 +414,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		// @TODO: don't permanently set the object metadata here, just make sure this PHP
 		//        request doesn't keep trying to download the file again and again.
 		$this->proxy->setBlobMetadata( $srcCont, $srcRel, array( 'sha1base36' => 0 ) );
-		wfProfileOut( __METHOD__ );
 		return false; // failed
 	}
 
@@ -469,7 +466,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		if ( $after === INF ) {
 			return $dirs;
 		}
-		wfProfileIn( __METHOD__ . '-' . $this->name );
 
 		try {
 			$prefix = ( $dir == '' ) ? null : "{$dir}/";
@@ -551,7 +547,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 			}
 		}
 
-		wfProfileOut( __METHOD__ . '-' . $this->name );
 		return $dirs;
 	}
 
@@ -569,7 +564,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		if ( $after === INF ) {
 			return $files;
 		}
-		wfProfileIn( __METHOD__ . '-' . $this->name );
 
 		try {
 			$prefix = ( $dir == '' ) ? null : "{$dir}/";
@@ -621,7 +615,6 @@ class WindowsAzureFileBackend extends FileBackendStore {
 			}
 		}
 
-		wfProfileOut( __METHOD__ . '-' . $this->name );
 		return $files;
 	}
 
