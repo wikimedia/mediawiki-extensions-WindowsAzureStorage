@@ -1,6 +1,6 @@
 {
 	"require": {
-		"microsoft/windowsazure": "*"
+		"microsoft/azure-storage-blob": "*"
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "1.0.0",

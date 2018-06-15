@@ -25,12 +25,12 @@
  * @author Thai Phan
  */
 
-use WindowsAzure\Blob\Models\ContainerACL;
-use WindowsAzure\Blob\Models\CreateBlobOptions;
-use WindowsAzure\Blob\Models\ListBlobsOptions;
-use WindowsAzure\Blob\Models\PublicAccessType;
-use WindowsAzure\Common\ServiceException;
-use WindowsAzure\Common\ServicesBuilder;
+use MicrosoftAzure\Storage\Blob\Models\ContainerACL;
+use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 
 /**
  * @brief Class for a Windows Azure based file backend
@@ -63,7 +63,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 					 . 'AccountName=' . $config['azureAccount'] . ';'
 					 . 'AccountKey=' . $config['azureKey'];
 
-		$this->proxy = ServicesBuilder::getInstance()->createBlobService( $this->connectionString );
+		$this->proxy = BlobRestProxy::createBlobService( $this->connectionString );
 	}
 
 	/**
@@ -138,8 +138,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 		// (b) Actually create the object
 		try {
-			$options = new CreateBlobOptions();
+			$options = new CreateBlockBlobOptions();
 			$options->setMetadata( array( 'sha1base36' => $sha1Hash ) );
+			$options->setContentType( mime_content_type($params['src']) );
 			$this->proxy->createBlockBlob( $dstCont, $dstRel, (string)$params['content'], $options );
 		} catch ( ServiceException $e ) {
 			switch ( $e->getCode() ) {
@@ -180,8 +181,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 		// (b) Actually store the object
 		try {
-			$options = new CreateBlobOptions();
+			$options = new CreateBlockBlobOptions();
 			$options->setMetadata( array( 'sha1base36' => $sha1Hash ) );
+			$options->setContentType( mime_content_type($params['src']) );
 			wfSuppressWarnings();
 			$fp = fopen( $params['src'], 'rb' );
 			wfRestoreWarnings();
@@ -644,8 +646,10 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		try {
-			$contents = $this->proxy->getBlob( $srcCont, $srcRel )->getContentStream();
-			file_put_contents( 'php://output', $contents );
+			$contents = $this->proxy->getBlob( $srcCont, $srcRel );
+			$contentStream = $contents->getContentStream();
+			file_put_contents( 'php://output', header('Content-Type:'.$contents->getProperties()->getContentType()) );
+			file_put_contents( 'php://output', $contentStream );
 		} catch ( ServiceException $e ) {
 			switch ( $e->getCode() ) {
 				case 404:
@@ -765,7 +769,7 @@ abstract class AzureFileBackendList implements Iterator {
 	 * @param $dir string Resolved directory relative to container
 	 * @param $params Array
 	 */
-	public function __construct( AzureFileBackend $backend, $fullCont, $dir, array $params ) {
+	public function __construct( WindowsAzureFileBackend $backend, $fullCont, $dir, array $params ) {
 		$this->backend = $backend;
 		$this->container = $fullCont;
 		$this->dir = $dir;
