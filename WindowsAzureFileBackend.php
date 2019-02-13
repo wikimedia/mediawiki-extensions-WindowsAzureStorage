@@ -169,9 +169,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		// (a) Get a SHA-1 hash of the object
-		wfSuppressWarnings();
+		Wikimedia\suppressWarnings();
 		$sha1Hash = sha1_file( $params['src'] );
-		wfRestoreWarnings();
+		Wikimedia\restoreWarnings();
 		if ( $sha1Hash === false ) { // source doesn't exist?
 			$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			return $status;
@@ -182,9 +182,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		try {
 			$options = new CreateBlobOptions();
 			$options->setMetadata( array( 'sha1base36' => $sha1Hash ) );
-			wfSuppressWarnings();
+			Wikimedia\suppressWarnings();
 			$fp = fopen( $params['src'], 'rb' );
-			wfRestoreWarnings();
+			Wikimedia\restoreWarnings();
 			if ( !$fp ) {
 				$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			} else {
