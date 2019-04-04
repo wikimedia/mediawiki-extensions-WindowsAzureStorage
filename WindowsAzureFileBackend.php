@@ -37,7 +37,7 @@ use WindowsAzure\Common\ServicesBuilder;
  *
  * This requires the WindowAzureSDK extension in order to work. Information on
  * how to install and set up this extension are all located at
- * http://www.mediawiki.org/wiki/Extension:WindowsAzureSDK.
+ * https://www.mediawiki.org/wiki/Extension:WindowsAzureSDK.
  *
  * @ingroup FileBackend
  * @since 1.22
