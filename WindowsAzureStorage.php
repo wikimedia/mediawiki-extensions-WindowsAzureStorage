@@ -1,24 +1,14 @@
 <?php
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	echo "WindowsAzureStorage extension\n";
-	exit( 1 );
+if ( function_exists( 'wfLoadExtension' ) ) {
+	wfLoadExtension( 'WindowsAzureStorage' );
+	// Keep i18n globals so mergeMessageFileList.php doesn't break
+	$wgMessagesDirs['WindowsAzureStorage'] = __DIR__ . '/i18n';
+	wfWarn(
+		'Deprecated PHP entry point used for the WindowsAzureStorage extension. ' .
+		'Please use wfLoadExtension() instead, ' .
+		'see https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Extension_registration for more details.'
+	);
+	return;
+} else {
+	die( 'This version of the WindowsAzureStorage extension requires MediaWiki 1.25+' );
 }
-
-$dir = dirname( __FILE__ ) . '/';
-
-$wgExtensionCredits['other'][] = array(
-	'path'           => __FILE__,
-	'name'           => 'WindowsAzureStorage',
-	'author'         => array( '[http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH]', 'Markus Glaser', 'Robert Vogel' ),
-	'url'            => 'https://www.mediawiki.org/wiki/Extension:WindowsAzureStorage',
-	'version'        => '1.1.0',
-	'descriptionmsg' => 'windowsazurestorage-desc',
-);
-
-$wgMessagesDirs['WindowsAzureStorage'] = __DIR__ . '/i18n';
-
-$wgAutoloadClasses['WindowsAzureFileBackend'] = $dir . 'WindowsAzureFileBackend.php';
-$wgAutoloadClasses['AzureFileBackendList'] = $dir . 'WindowsAzureFileBackend.php';
-$wgAutoloadClasses['AzureFileBackendDirList'] = $dir . 'WindowsAzureFileBackend.php';
-$wgAutoloadClasses['AzureFileBackendFileList'] = $dir . 'WindowsAzureFileBackend.php';
