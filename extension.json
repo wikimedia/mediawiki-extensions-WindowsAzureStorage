@@ -18,10 +18,10 @@
 		]
 	},
 	"AutoloadClasses": {
-		"WindowsAzureFileBackend": "WindowsAzureFileBackend.php",
-		"AzureFileBackendList": "WindowsAzureFileBackend.php",
-		"AzureFileBackendDirList": "WindowsAzureFileBackend.php",
-		"AzureFileBackendFileList": "WindowsAzureFileBackend.php"
+		"WindowsAzureFileBackend": "includes/WindowsAzureFileBackend.php",
+		"AzureFileBackendList": "includes/AzureFileBackendList.php",
+		"AzureFileBackendDirList": "includes/AzureFileBackendDirList.php",
+		"AzureFileBackendFileList": "includes/AzureFileBackendFileList.php"
 	},
 	"manifest_version": 1
 }
