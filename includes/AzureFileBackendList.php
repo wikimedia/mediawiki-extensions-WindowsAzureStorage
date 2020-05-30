@@ -96,7 +96,7 @@ abstract class AzureFileBackendList implements Iterator {
 	 *
 	 * @param $container string Resolved container name
 	 * @param $dir string Resolved path relative to container
-	 * @param $after string|null
+	 * @param &$after string|null
 	 * @param $limit integer
 	 * @param $params Array
 	 * @return Traversable|array|null Returns null on failure
