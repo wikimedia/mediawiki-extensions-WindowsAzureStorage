@@ -6,26 +6,32 @@
  * @ingroup FileBackend
  */
 abstract class AzureFileBackendList implements Iterator {
-	/** @var Array */
+	/** @var array */
 	protected $bufferIter = [];
-	protected $bufferAfter = null; // string; list items *after* this path
-	protected $pos = 0; // integer
-	/** @var Array */
+	/** @var string|null list items *after* this path */
+	protected $bufferAfter = null;
+	/** @var int */
+	protected $pos = 0;
+	/** @var array */
 	protected $params = [];
 
 	/** @var AzureFileBackend */
 	protected $backend;
-	protected $container; // string; container name
-	protected $dir; // string; storage directory
-	protected $suffixStart; // integer
+	/** @var string container name */
+	protected $container;
+	/** @var string storage directory */
+	protected $dir;
+	/** @var int */
+	protected $suffixStart;
 
-	const PAGE_SIZE = 9000; // file listing buffer size
+	/** file listing buffer size */
+	const PAGE_SIZE = 9000;
 
 	/**
-	 * @param $backend AzureFileBackend
-	 * @param $fullCont string Resolved container name
-	 * @param $dir string Resolved directory relative to container
-	 * @param $params Array
+	 * @param AzureFileBackend $backend
+	 * @param string $fullCont Resolved container name
+	 * @param string $dir Resolved directory relative to container
+	 * @param array $params
 	 */
 	public function __construct( AzureFileBackend $backend, $fullCont, $dir, array $params ) {
 		$this->backend = $backend;
@@ -94,11 +100,11 @@ abstract class AzureFileBackendList implements Iterator {
 	/**
 	 * Get the given list portion (page)
 	 *
-	 * @param $container string Resolved container name
-	 * @param $dir string Resolved path relative to container
-	 * @param &$after string|null
-	 * @param $limit integer
-	 * @param $params Array
+	 * @param string $container Resolved container name
+	 * @param string $dir Resolved path relative to container
+	 * @param string|null &$after
+	 * @param int $limit
+	 * @param array $params
 	 * @return Traversable|array|null Returns null on failure
 	 */
 	abstract protected function pageFromList( $container, $dir, &$after, $limit, array $params );

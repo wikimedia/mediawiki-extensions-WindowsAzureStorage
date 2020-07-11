@@ -13,7 +13,12 @@ class AzureFileBackendDirList extends AzureFileBackendList {
 
 	/**
 	 * @see AzureFileBackendList::pageFromList()
-	 * @return Array|null
+	 * @param string $container
+	 * @param string $dir
+	 * @param string|null &$after
+	 * @param int $limit
+	 * @param array $params
+	 * @return array|null
 	 */
 	public function pageFromList( $container, $dir, &$after, $limit, array $params ) {
 		return $this->backend->getDirListPageInternal( $container, $dir, $after, $limit, $params );

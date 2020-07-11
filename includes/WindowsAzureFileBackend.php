@@ -51,6 +51,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::__construct()
+	 * @param array $config
 	 * Additional $config params include:
 	 *   - azureAccount : Windows Azure storage account
 	 *   - azureKey     : Windows Azure storage account key
@@ -68,6 +69,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::resolveContainerName()
+	 * @param string $container
 	 * @return string|null
 	 */
 	protected function resolveContainerName( $container ) {
@@ -83,7 +85,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::resolveContainerPath()
-	 * @return null
+	 * @param string $container
+	 * @param string $relStoragePath
+	 * @return string|null
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
 		if ( !mb_check_encoding( $relStoragePath, 'UTF-8' ) ) {
@@ -96,6 +100,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::isPathUsableInternal()
+	 * @param string $storagePath
 	 * @return bool
 	 */
 	public function isPathUsableInternal( $storagePath ) {
@@ -122,6 +127,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doCreateInternal()
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doCreateInternal( array $params ) {
@@ -157,6 +163,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doStoreInternal()
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doStoreInternal( array $params ) {
@@ -207,6 +214,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doCopyInternal()
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doCopyInternal( array $params ) {
@@ -244,6 +252,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doDeleteInternal()
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doDeleteInternal( array $params ) {
@@ -275,6 +284,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doPrepareInternal()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doPrepareInternal( $fullCont, $dir, array $params ) {
@@ -305,6 +317,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doSecureInternal()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doSecureInternal( $fullCont, $dir, array $params ) {
@@ -327,6 +342,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doPublishInternal()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doPublishInternal( $fullCont, $dir, array $params ) {
@@ -346,6 +364,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doFileExists()
+	 * @param array $params
 	 * @return array|bool|null
 	 */
 	protected function doGetFileStat( array $params ) {
@@ -385,9 +404,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	/**
 	 * Fill in any missing blob metadata and save it to Azure
 	 *
-	 * @param $srcCont string Container name
-	 * @param $srcRel string Blob name
-	 * @param $path string Storage path to object
+	 * @param string $srcCont Container name
+	 * @param string $srcRel Blob name
+	 * @param string $path Storage path to object
 	 * @return bool Success
 	 * @throws Exception Azure Storage service exception
 	 */
@@ -419,6 +438,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doDirectoryExists()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return bool|null
 	 */
 	protected function doDirectoryExists( $fullCont, $dir, array $params ) {
@@ -447,6 +469,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::getDirectoryListInternal()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return AzureFileBackendDirList
 	 */
 	public function getDirectoryListInternal( $fullCont, $dir, array $params ) {
@@ -455,12 +480,23 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::getFileListInternal()
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param array $params
 	 * @return AzureFileBackendFileList
 	 */
 	public function getFileListInternal( $fullCont, $dir, array $params ) {
 		return new AzureFileBackendFileList( $this, $fullCont, $dir, $params );
 	}
 
+	/**
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param string|null &$after
+	 * @param int $limit
+	 * @param array $params
+	 * @return array List of relative paths of files under $dir
+	 */
 	public function getDirListPageInternal( $fullCont, $dir, &$after, $limit, array $params ) {
 		$dirs = [];
 		if ( $after === INF ) {
@@ -551,6 +587,10 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		return $dirs;
 	}
 
+	/**
+	 * @param string $path
+	 * @return string|false
+	 */
 	protected function getParentDir( $path ) {
 		return ( strpos( $path, '/' ) !== false ) ? dirname( $path ) : false;
 	}
@@ -558,6 +598,11 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	/**
 	 * Do not call this function outside of AzureFileBackendFileList
 	 *
+	 * @param string $fullCont
+	 * @param string $dir
+	 * @param string|null &$after
+	 * @param int $limit
+	 * @param array $params
 	 * @return array List of relative paths of files under $dir
 	 */
 	public function getFileListPageInternal( $fullCont, $dir, &$after, $limit, array $params ) {
@@ -621,6 +666,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doGetFileSha1base36()
+	 * @param array $params
 	 * @return bool
 	 */
 	protected function doGetFileSha1base36( array $params ) {
@@ -634,6 +680,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doStreamFile()
+	 * @param array $params
 	 * @return Status
 	 */
 	protected function doStreamFile( array $params ) {
@@ -663,6 +710,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 	/**
 	 * @see FileBackendStore::doGetLocalCopyMulti()
+	 * @param array $params
 	 * @return null|TempFSFile
 	 */
 	protected function doGetLocalCopyMulti( array $params ) {
@@ -718,10 +766,10 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	 * Log an unexpected exception for this backend.
 	 * This also sets the Status object to have a fatal error.
 	 *
-	 * @param $e Exception
-	 * @param $status Status|null
-	 * @param $func string
-	 * @param $params Array
+	 * @param Exception $e
+	 * @param Status|null $status
+	 * @param string $func
+	 * @param array $params
 	 * @return void
 	 */
 	protected function handleException( Exception $e, $status, $func, array $params ) {
