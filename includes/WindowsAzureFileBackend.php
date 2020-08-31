@@ -25,12 +25,12 @@
  * @author Thai Phan
  */
 
-use WindowsAzure\Blob\Models\ContainerACL;
-use WindowsAzure\Blob\Models\CreateBlobOptions;
-use WindowsAzure\Blob\Models\ListBlobsOptions;
-use WindowsAzure\Blob\Models\PublicAccessType;
-use WindowsAzure\Common\ServiceException;
-use WindowsAzure\Common\ServicesBuilder;
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MicrosoftAzure\Storage\Blob\Models\ContainerACL;
+use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
 /**
  * @brief Class for a Windows Azure based file backend
@@ -60,11 +60,11 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		parent::__construct( $config );
 
 		// Generate connection string to Windows Azure storage account
-		$this->connectionString = 'DefaultEndpointsProtocol=http;'
+		$this->connectionString = 'DefaultEndpointsProtocol=https;'
 					 . 'AccountName=' . $config['azureAccount'] . ';'
 					 . 'AccountKey=' . $config['azureKey'];
 
-		$this->proxy = ServicesBuilder::getInstance()->createBlobService( $this->connectionString );
+		$this->proxy = BlobRestProxy::createBlobService( $this->connectionString );
 	}
 
 	/**
@@ -144,8 +144,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 		// (b) Actually create the object
 		try {
-			$options = new CreateBlobOptions();
+			$options = new CreateBlockBlobOptions();
 			$options->setMetadata( [ 'sha1base36' => $sha1Hash ] );
+			$options->setContentType( mime_content_type( $params['src'] ) );
 			$this->proxy->createBlockBlob( $dstCont, $dstRel, (string)$params['content'], $options );
 		} catch ( ServiceException $e ) {
 			switch ( $e->getCode() ) {
@@ -187,8 +188,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 
 		// (b) Actually store the object
 		try {
-			$options = new CreateBlobOptions();
+			$options = new CreateBlockBlobOptions();
 			$options->setMetadata( [ 'sha1base36' => $sha1Hash ] );
+			$options->setContentType( mime_content_type( $params['src'] ) );
 			Wikimedia\suppressWarnings();
 			$fp = fopen( $params['src'], 'rb' );
 			Wikimedia\restoreWarnings();
@@ -692,8 +694,13 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		try {
-			$contents = $this->proxy->getBlob( $srcCont, $srcRel )->getContentStream();
-			file_put_contents( 'php://output', $contents );
+			$contents = $this->proxy->getBlob( $srcCont, $srcRel );
+			$contentStream = $contents->getContentStream();
+			file_put_contents(
+				'php://output',
+				header( 'Content-Type:' . $contents->getProperties()->getContentType() )
+			);
+			file_put_contents( 'php://output', $contentStream );
 		} catch ( ServiceException $e ) {
 			switch ( $e->getCode() ) {
 				case 404:

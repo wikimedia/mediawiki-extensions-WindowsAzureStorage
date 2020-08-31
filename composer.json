@@ -1,6 +1,6 @@
 {
 	"require": {
-		"microsoft/windowsazure": "*"
+		"microsoft/azure-storage-blob": "*"
 	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "31.0.0",
