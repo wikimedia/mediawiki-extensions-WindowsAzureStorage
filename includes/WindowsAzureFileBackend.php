@@ -31,6 +31,7 @@ use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
 use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * @brief Class for a Windows Azure based file backend
@@ -177,9 +178,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		}
 
 		// (a) Get a SHA-1 hash of the object
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$sha1Hash = sha1_file( $params['src'] );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 		if ( $sha1Hash === false ) { // source doesn't exist?
 			$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			return $status;
@@ -191,9 +192,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 			$options = new CreateBlockBlobOptions();
 			$options->setMetadata( [ 'sha1base36' => $sha1Hash ] );
 			$options->setContentType( mime_content_type( $params['src'] ) );
-			Wikimedia\suppressWarnings();
+			AtEase::suppressWarnings();
 			$fp = fopen( $params['src'], 'rb' );
-			Wikimedia\restoreWarnings();
+			AtEase::restoreWarnings();
 			if ( !$fp ) {
 				$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			} else {
