@@ -1,4 +1,5 @@
 {
+	"name": "WindowsAzureStorage",
 	"private": true,
 	"scripts": {
 		"test": "grunt test"
