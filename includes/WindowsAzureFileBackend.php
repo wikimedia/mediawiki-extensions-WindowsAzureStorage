@@ -105,7 +105,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	 * @return bool
 	 */
 	public function isPathUsableInternal( $storagePath ) {
-		list( $container, $rel ) = $this->resolveStoragePathReal( $storagePath );
+		[ $container, $rel ] = $this->resolveStoragePathReal( $storagePath );
 		if ( $rel === null ) {
 			return false; // invalid
 		}
@@ -134,7 +134,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	protected function doCreateInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $dstCont, $dstRel ) = $this->resolveStoragePathReal( $params['dst'] );
+		[ $dstCont, $dstRel ] = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $dstRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -171,7 +171,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	protected function doStoreInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $dstCont, $dstRel ) = $this->resolveStoragePathReal( $params['dst'] );
+		[ $dstCont, $dstRel ] = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $dstRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -223,13 +223,13 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	protected function doCopyInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		[ $srcCont, $srcRel ] = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
 
-		list( $dstCont, $dstRel ) = $this->resolveStoragePathReal( $params['dst'] );
+		[ $dstCont, $dstRel ] = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $dstRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -261,7 +261,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	protected function doDeleteInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		[ $srcCont, $srcRel ] = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
@@ -371,7 +371,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	 * @return array|bool|null
 	 */
 	protected function doGetFileStat( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		[ $srcCont, $srcRel ] = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
 		}
@@ -532,7 +532,8 @@ class WindowsAzureFileBackend extends FileBackendStore {
 						$objects[] = $name;
 					}
 					$name = preg_replace( '#[^/]*$#', '', $name );
-					if ( preg_match( '#^' . $prefix . '(\/|)$#', $name ) ) { continue;
+					if ( preg_match( '#^' . $prefix . '(\/|)$#', $name ) ) {
+						continue;
 					}
 					$dirray = preg_split( '#\/#', $name );
 					$elements = count( preg_split( '#\/#', $prefix ) );
@@ -689,7 +690,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 	protected function doStreamFile( array $params ) {
 		$status = Status::newGood();
 
-		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		[ $srcCont, $srcRel ] = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 		}
@@ -729,7 +730,7 @@ class WindowsAzureFileBackend extends FileBackendStore {
 		// not exist. Doing a stat here is useless causes infinite loops in addMissingMetadata().
 		foreach ( array_chunk( $params['srcs'], $params['concurrency'] ) as $pathBatch ) {
 			foreach ( $pathBatch as $path ) { // each path in this concurrent batch
-				list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $path );
+				[ $srcCont, $srcRel ] = $this->resolveStoragePathReal( $path );
 				if ( $srcRel === null ) {
 					$tmpFiles[$path] = null;
 					continue;
