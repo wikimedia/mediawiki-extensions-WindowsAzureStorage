@@ -199,7 +199,9 @@ class WindowsAzureFileBackend extends FileBackendStore {
 				$status->fatal( 'backend-fail-store', $params['src'], $params['dst'] );
 			} else {
 				$this->proxy->createBlockBlob( $dstCont, $dstRel, $fp, $options );
-				fclose( $fp );
+				if ( is_resource($fp) ) { // guard against double close
+					fclose( $fp );
+				}
 			}
 		} catch ( ServiceException $e ) {
 			switch ( $e->getCode() ) {
