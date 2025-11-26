@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Winston Sung"
+			"Winston Sung",
+			"Aca"
 		]
 	},
-	"windowsazurestorage-desc": "Spremanje datoteka u klaud Windows Azure, upotrebom Usluge Windows Azure Storage"
+	"windowsazurestorage-desc": "Spremanje datoteka u klaud Windows Azure, pomoću Usluge Windows Azure Storage"
 }
