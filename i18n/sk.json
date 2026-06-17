@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"windowsazurestorage-desc": "Ukladá súbory do cloudu Windows Azure pomocou služby Windows Azure Storage"
+}
